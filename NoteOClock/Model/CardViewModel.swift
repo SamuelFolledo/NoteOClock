@@ -18,11 +18,13 @@ class CardViewModel: ObservableObject {
     @Published var resizedCard: Card? = nil
     @Published var resizeOffset: CGSize? = nil
     @Published var resizePoint: ResizePoint? = nil
+    @Published var selectedCard: Card? = nil
 
     init(cards: [Card] = []) {
         self.cards = cards
     }
 
+    //MARK: - Public Methods
     func widthForCardComponent(card: Card) -> CGFloat {
         let widthOffset = (resizedCard?.id == card.id) ? (resizeOffset?.width ?? 0.0) : 0.0
         //TODO: Prevent from shrinking too much
@@ -45,6 +47,53 @@ class CardViewModel: ObservableObject {
         //TODO: Prevent from shrinking too much
         let yPositionOffset = (draggedCard?.id == card.id) ? (dragOffset?.height ?? 0.0) : 0.0
         return card.origin.y + (card.size.height / 2.0) + yPositionOffset
+    }
+
+    //MARK: Resize Functions
+    func updateForResize(point: ResizePoint, deltaX: CGFloat, deltaY: CGFloat) {
+        resizeOffset = CGSize(width: deltaX, height: deltaY)
+        resizePoint = resizePoint
+    }
+
+    func updateForResize(using resizePoint: ResizePoint, deltaX: CGFloat, deltaY: CGFloat) {
+        guard let resizedCard else { return }
+        updateForResize(point: resizePoint, deltaX: deltaX, deltaY: deltaY)
+        var width: CGFloat = resizedCard.size.width
+        var height: CGFloat = resizedCard.size.height
+        var x: CGFloat = resizedCard.origin.x
+        var y: CGFloat = resizedCard.origin.y
+
+        switch resizePoint {
+        case .topLeft:
+            width -= deltaX
+            height -= deltaY
+            x += deltaX
+            y += deltaY
+        case .topMiddle:
+            height -= deltaY
+            y += deltaY
+        case .topRight:
+            width += deltaX
+            height -= deltaY
+            y += deltaY
+            print(width, height, x)
+        case .rightMiddle:
+            width += deltaX
+        case .bottomRight:
+            width += deltaX
+            height += deltaY
+        case .bottomMiddle:
+            height += deltaY
+        case .bottomLeft:
+            width -= deltaX
+            height += deltaY
+            x += deltaX
+        case .leftMiddle:
+            width -= deltaX
+            x += deltaX
+        }
+        resizedCard.size = CGSize(width: width, height: height)
+        resizedCard.origin = CGPoint(x: x, y: y)
     }
 
     func resizeEnded() {
@@ -89,6 +138,7 @@ class CardViewModel: ObservableObject {
 
     }
 
+    //MARK: Drag Methods
     func updateForDrag(deltaX: CGFloat, deltaY: CGFloat) {
         dragOffset = CGSize(width: deltaX, height: deltaY)
     }
@@ -99,46 +149,5 @@ class CardViewModel: ObservableObject {
         draggedCard?.origin.y += dragOffset.height
         draggedCard = nil
         self.dragOffset = nil
-    }
-
-    func updateForResize(using resizePoint: ResizePoint, deltaX: CGFloat, deltaY: CGFloat) {
-        guard let resizedCard else { return }
-
-        var width: CGFloat = resizedCard.size.width
-        var height: CGFloat = resizedCard.size.height
-        var x: CGFloat = resizedCard.origin.x
-        var y: CGFloat = resizedCard.origin.y
-
-        switch resizePoint {
-        case .topLeft:
-            width -= deltaX
-            height -= deltaY
-            x += deltaX
-            y += deltaY
-        case .topMiddle:
-            height -= deltaY
-            y += deltaY
-        case .topRight:
-            width += deltaX
-            height -= deltaY
-            y += deltaY
-            print(width, height, x)
-        case .rightMiddle:
-            width += deltaX
-        case .bottomRight:
-            width += deltaX
-            height += deltaY
-        case .bottomMiddle:
-            height += deltaY
-        case .bottomLeft: //
-            width -= deltaX
-            height += deltaY
-            x += deltaX
-        case .leftMiddle:
-            width -= deltaX
-            x += deltaX
-        }
-        resizedCard.size = CGSize(width: width, height: height)
-        resizedCard.origin = CGPoint(x: x, y: y)
     }
 }

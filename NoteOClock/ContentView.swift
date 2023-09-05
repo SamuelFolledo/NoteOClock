@@ -8,11 +8,23 @@
 import SwiftUI
 
 struct ContentView: View {
-    let fakeCard = Card(type: .text, origin: .init(x: 300, y: 300), size: .init(width: 200, height: 200), id: "1")
+    let fakeCard = Card(type: .text, origin: .init(x: 200, y: 300), size: .init(width: 200, height: 200), id: "1")
     @StateObject var cardViewModel = CardViewModel()
 
     var body: some View {
-        ResizeableCard(card: fakeCard, viewModel: cardViewModel)
+        VStack {
+            if !cardViewModel.cards.isEmpty {
+                let index = 0
+                ResizeableCard(index: index,
+                               viewModel: cardViewModel,
+                               isSelected: (cardViewModel.selectedCard != nil))
+            } else {
+                Text("No cards")
+            }
+        }
+        .onAppear {
+            cardViewModel.cards.append(fakeCard)
+        }
     }
 }
 

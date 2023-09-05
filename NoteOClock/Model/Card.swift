@@ -21,6 +21,12 @@ class Card {
     }
 }
 
+extension Card: Equatable {
+    static func == (lhs: Card, rhs: Card) -> Bool {
+        return lhs.id == rhs.id
+    }
+}
+
 enum CardType {
     case text
 
