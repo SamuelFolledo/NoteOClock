@@ -13,10 +13,10 @@ struct ResizeableCard: View {
 
     var card: Card
 
-    init(index: Int, viewModel: CardViewModel, isSelected: Bool) {
+    init(card: Card, viewModel: CardViewModel) {
         self.viewModel = viewModel
-        self.isSelected = isSelected
-        self.card = viewModel.cards[index]
+        self.isSelected = viewModel.selectedCard == card
+        self.card = card
     }
 
     var body: some View {

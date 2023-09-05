@@ -12,12 +12,12 @@ struct ContentView: View {
     @StateObject var cardViewModel = CardViewModel()
 
     var body: some View {
-        VStack {
+        ZStack {
             if !cardViewModel.cards.isEmpty {
-                let index = 0
-                ResizeableCard(index: index,
-                               viewModel: cardViewModel,
-                               isSelected: (cardViewModel.selectedCard != nil))
+                ForEach(cardViewModel.cards, id: \.id) { card in
+                    ResizeableCard(card: card,
+                                   viewModel: cardViewModel)
+                }
             } else {
                 Text("No cards")
             }
