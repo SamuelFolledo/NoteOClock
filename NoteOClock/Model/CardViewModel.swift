@@ -19,42 +19,58 @@ class CardViewModel: ObservableObject {
     @Published var resizeOffset: CGSize? = nil
     @Published var resizePoint: ResizePoint? = nil
     @Published var selectedCard: Card? = nil
+//    @Published var selectedTypeToAdd: CardType? = nil
+    @Published var previousResizeOffset: CGSize? = nil
 
     init(cards: [Card] = []) {
         self.cards = cards
+
     }
 
     //MARK: - Public Methods
-    func widthForCardComponent(card: Card) -> CGFloat {
-        let widthOffset = (resizedCard?.id == card.id) ? (resizeOffset?.width ?? 0.0) : 0.0
-        //TODO: Prevent from shrinking too much
-        return card.size.width + widthOffset
+    func widthForCardComponent(card: Card?) -> CGFloat? {
+        if let card {
+            let widthOffset = (resizedCard?.id == card.id) ? (resizeOffset?.width ?? 0.0) : 0.0
+            //TODO: Prevent from shrinking too much
+            return card.size.width + widthOffset
+        }
+        return nil
     }
 
-    func heightForCardComponent(card: Card) -> CGFloat {
-        let heightOffset = (resizedCard?.id == card.id) ? (resizeOffset?.height ?? 0.0) : 0.0
-        //TODO: Prevent from shrinking too much
-        return card.size.height + heightOffset
+    func heightForCardComponent(card: Card?) -> CGFloat? {
+        if let card {
+            let heightOffset = (resizedCard?.id == card.id) ? (resizeOffset?.height ?? 0.0) : 0.0
+            //TODO: Prevent from shrinking too much
+            return card.size.height + heightOffset
+        }
+        return nil
     }
 
-    func xPositionForCardComponent(card: Card) -> CGFloat {
+    func xPositionForCardComponent(card: Card?) -> CGFloat? {
         //TODO: Prevent from shrinking too much
-        let xPositionOffset = (draggedCard?.id == card.id) ? (dragOffset?.width ?? 0.0) : 0.0
-        return card.origin.x + (card.size.width / 2.0) + xPositionOffset
+        if let card {
+            let xPositionOffset = (draggedCard?.id == card.id) ? (dragOffset?.width ?? 0.0) : 0.0
+            return card.origin.x + (card.size.width / 2.0) + xPositionOffset
+        }
+        return nil
     }
 
-    func yPositionForCardComponent(card: Card) -> CGFloat {
+    func yPositionForCardComponent(card: Card?) -> CGFloat? {
         //TODO: Prevent from shrinking too much
-        let yPositionOffset = (draggedCard?.id == card.id) ? (dragOffset?.height ?? 0.0) : 0.0
-        return card.origin.y + (card.size.height / 2.0) + yPositionOffset
+        if let card {
+            let yPositionOffset = (draggedCard?.id == card.id) ? (dragOffset?.height ?? 0.0) : 0.0
+            return card.origin.y + (card.size.height / 2.0) + yPositionOffset
+        }
+        return nil
     }
 
     //MARK: Resize Functions
     func updateForResize(point: ResizePoint, deltaX: CGFloat, deltaY: CGFloat) {
         resizeOffset = CGSize(width: deltaX, height: deltaY)
-        resizePoint = resizePoint
+        resizePoint = point
     }
 
+    ///Source: https://stackoverflow.com/questions/74916203/how-to-make-code-that-resizes-swiftui-views-using-a-drag-gesture-more-performant
     func updateForResize(using resizePoint: ResizePoint, deltaX: CGFloat, deltaY: CGFloat) {
         guard let resizedCard else { return }
         updateForResize(point: resizePoint, deltaX: deltaX, deltaY: deltaY)
@@ -63,41 +79,49 @@ class CardViewModel: ObservableObject {
         var x: CGFloat = resizedCard.origin.x
         var y: CGFloat = resizedCard.origin.y
 
+        // Adjust the values of deltaY and deltaX to mimic a local coordinate space.
+        let adjDeltaY = deltaY - (previousResizeOffset?.height ?? 0)
+        let adjDeltaX = deltaX - (previousResizeOffset?.width ?? 0)
+//        print("\n\nUpdateForResize()\ncard size is: \(width),\(height)\tposition is: \(x),\(y)\nDelta are: \(deltaX),\(deltaY)\nOffsets are:\(previousResizeOffset?.width ?? 0),\(previousResizeOffset?.height ?? 0)")
+
         switch resizePoint {
         case .topLeft:
-            width -= deltaX
-            height -= deltaY
-            x += deltaX
-            y += deltaY
+            width -= adjDeltaX
+            height -= adjDeltaY
+            x += adjDeltaX
+            y += adjDeltaY
         case .topMiddle:
-            height -= deltaY
-            y += deltaY
+            height -= adjDeltaY
+            y += adjDeltaY
         case .topRight:
-            width += deltaX
-            height -= deltaY
-            y += deltaY
-            print(width, height, x)
+            width += adjDeltaX
+            height -= adjDeltaY
+            y += adjDeltaY
         case .rightMiddle:
-            width += deltaX
+            width += adjDeltaX
         case .bottomRight:
-            width += deltaX
-            height += deltaY
+            width += adjDeltaX
+            height += adjDeltaY
         case .bottomMiddle:
-            height += deltaY
+            height += adjDeltaY
         case .bottomLeft:
-            width -= deltaX
-            height += deltaY
-            x += deltaX
+            width -= adjDeltaX
+            height += adjDeltaY
+            x += adjDeltaX
         case .leftMiddle:
-            width -= deltaX
-            x += deltaX
+            width -= adjDeltaX
+            x += adjDeltaX
         }
         resizedCard.size = CGSize(width: width, height: height)
         resizedCard.origin = CGPoint(x: x, y: y)
+        previousResizeOffset = .init(width: deltaX, height: deltaY)
     }
 
     func resizeEnded() {
-        guard let resizedCard, let resizePoint, let resizeOffset else { return }
+        guard let resizedCard, let resizePoint, let resizeOffset else {
+            print("Resize ended with return")
+            return
+        }
         var w: CGFloat = resizedCard.size.width
         var h: CGFloat = resizedCard.size.height
         var x: CGFloat = resizedCard.origin.x
@@ -132,6 +156,8 @@ class CardViewModel: ObservableObject {
         }
         resizedCard.size = CGSize(width: w, height: h)
         resizedCard.origin = CGPoint(x: x, y: y)
+        self.previousResizeOffset = nil
+        
         self.resizeOffset = nil
         self.resizePoint = nil
         self.resizedCard = nil

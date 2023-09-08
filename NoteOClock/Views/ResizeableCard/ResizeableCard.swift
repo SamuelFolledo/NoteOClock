@@ -11,7 +11,7 @@ struct ResizeableCard: View {
     @ObservedObject var viewModel: CardViewModel
     var isSelected: Bool
 
-    var card: Card
+    weak var card: Card?
 
     init(card: Card, viewModel: CardViewModel) {
         self.viewModel = viewModel
@@ -20,41 +20,52 @@ struct ResizeableCard: View {
     }
 
     var body: some View {
-        ZStack {
-            Text(card.type.title)
-
-            if isSelected {
-                handlesView
+        if let card {
+            VStack { // <-- Wrapping VStack with alignment modifier
+                Group {
+                    switch card.type {
+                    case .text:
+                        Text(card.type.title)
+                            .padding(.all, 4)
+                    case .clock:
+                        ClockView()
+                    }
+                }
             }
+            .frame(
+                width: viewModel.widthForCardComponent(card: card) ?? .zero,
+                height: viewModel.heightForCardComponent(card: card) ?? .zero,
+                alignment: card.type == .clock ? .center : .topLeading
+            )
+            .overlay {
+                if isSelected {
+                    CardHandlesView(
+                        dragged: { point, deltaX, deltaY in
+                            if viewModel.resizedCard != card {
+                                viewModel.resizedCard = card
+                            }
+                            viewModel.updateForResize(using: point, deltaX: deltaX, deltaY: deltaY)
+                        }, dragEnded: {
+                            viewModel.resizeEnded()
+                        })
+                }
+            }
+            .background(isSelected ? card.type.color : .gray)
+            .position(
+                x: viewModel.xPositionForCardComponent(card: card) ?? .zero,
+                y: viewModel.yPositionForCardComponent(card: card) ?? .zero
+            )
+            .background(.blue)
+            .gesture(repositionGesture)
+            .onTapGesture { toggleIsSelected() }
         }
-        .frame(
-            width: viewModel.widthForCardComponent(card: card),
-            height: viewModel.heightForCardComponent(card: card)
-        )
-        .background(isSelected ? card.type.color : .gray)
-        .position(
-            x: viewModel.xPositionForCardComponent(card: card),
-            y: viewModel.yPositionForCardComponent(card: card)
-        )
-        .gesture(resizeGesture)
-        .onTapGesture { toggleIsSelected() }
-    }
-
-    var handlesView: some View {
-        CardHandlesView(
-            dragged: { point, deltaX, deltaY in
-                viewModel.resizedCard = card
-                viewModel.updateForResize(using: point, deltaX: deltaX, deltaY: deltaY)
-            }, dragEnded: {
-                viewModel.resizeEnded()
-            })
     }
 }
 
 //MARK: - Gestures
 private extension ResizeableCard {
-    var resizeGesture: some Gesture {
-        DragGesture()
+    var repositionGesture: some Gesture {
+        DragGesture(coordinateSpace: .global)
             .onChanged { gesture in
                 if isSelected {
                     viewModel.draggedCard = card

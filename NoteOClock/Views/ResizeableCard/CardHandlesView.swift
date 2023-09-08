@@ -75,7 +75,7 @@ struct CardHandlesView: View {
     }
 
     private func dragGesture(point: ResizePoint) -> some Gesture {
-        DragGesture()
+        DragGesture(coordinateSpace: .global)
             .onChanged { drag in
                 switch point {
                 case .topLeft:

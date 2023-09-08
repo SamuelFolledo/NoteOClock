@@ -15,11 +15,19 @@ struct ClockView: View {
     @State private var currentMonth = 1
     @State private var currentYear = 2023
 
+//    @State var currentDate = Date.now
+//    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+
     var body: some View {
         VStack {
-            Text("Clock App")
-                .font(.largeTitle)
-                .padding()
+//            Text("Clock App")
+//                .font(.largeTitle)
+//                .padding()
+//
+//            Text("\(currentDate)")
+//                .onReceive(timer) { input in
+//                    currentDate = input
+//                }
 
             Text(String(format: "%02d:%02d:%02d", currentHour, currentMinute, currentSecond))
                             .font(.system(size: 60))
