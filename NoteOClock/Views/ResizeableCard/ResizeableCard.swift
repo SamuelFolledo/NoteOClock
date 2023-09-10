@@ -10,7 +10,6 @@ import SwiftUI
 struct ResizeableCard: View {
     @ObservedObject var viewModel: CardViewModel
     var isSelected: Bool
-
     weak var card: Card?
 
     init(card: Card, viewModel: CardViewModel) {
@@ -21,7 +20,7 @@ struct ResizeableCard: View {
 
     var body: some View {
         if let card {
-            VStack { // <-- Wrapping VStack with alignment modifier
+            VStack {
                 Group {
                     switch card.type {
                     case .text:
@@ -82,7 +81,11 @@ private extension ResizeableCard {
         if viewModel.selectedCard == nil {
             viewModel.selectedCard = card
         } else {
-            viewModel.selectedCard = nil
+            if viewModel.selectedCard != card {
+                viewModel.selectedCard = card
+            } else {
+                viewModel.selectedCard = nil
+            }
         }
     }
 }

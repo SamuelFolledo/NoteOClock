@@ -78,12 +78,10 @@ class CardViewModel: ObservableObject {
         var height: CGFloat = resizedCard.size.height
         var x: CGFloat = resizedCard.origin.x
         var y: CGFloat = resizedCard.origin.y
-
         // Adjust the values of deltaY and deltaX to mimic a local coordinate space.
+        // TODO: Improve this algorithm
         let adjDeltaY = deltaY - (previousResizeOffset?.height ?? 0)
         let adjDeltaX = deltaX - (previousResizeOffset?.width ?? 0)
-//        print("\n\nUpdateForResize()\ncard size is: \(width),\(height)\tposition is: \(x),\(y)\nDelta are: \(deltaX),\(deltaY)\nOffsets are:\(previousResizeOffset?.width ?? 0),\(previousResizeOffset?.height ?? 0)")
-
         switch resizePoint {
         case .topLeft:
             width -= adjDeltaX
@@ -118,10 +116,7 @@ class CardViewModel: ObservableObject {
     }
 
     func resizeEnded() {
-        guard let resizedCard, let resizePoint, let resizeOffset else {
-            print("Resize ended with return")
-            return
-        }
+        guard let resizedCard, let resizePoint, let resizeOffset else { return }
         var w: CGFloat = resizedCard.size.width
         var h: CGFloat = resizedCard.size.height
         var x: CGFloat = resizedCard.origin.x
@@ -157,7 +152,6 @@ class CardViewModel: ObservableObject {
         resizedCard.size = CGSize(width: w, height: h)
         resizedCard.origin = CGPoint(x: x, y: y)
         self.previousResizeOffset = nil
-        
         self.resizeOffset = nil
         self.resizePoint = nil
         self.resizedCard = nil
