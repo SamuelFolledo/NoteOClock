@@ -14,9 +14,11 @@ struct ContentView: View {
     @StateObject var cardViewModel = CardViewModel()
 
     var body: some View {
-        ForEach(cardViewModel.cards, id: \.id) { card in
-            ResizeableCard(card: card,
-                           viewModel: cardViewModel)
+        ZStack {
+            ForEach(cardViewModel.cards, id: \.id) { card in
+                ResizeableCard(card: card,
+                               viewModel: cardViewModel)
+            }
         }
         .onAppear {
             let fakeCard = Card(type: .text, origin: .init(x: 80, y: 90), size: .init(width: 200, height: 200), id: "1")

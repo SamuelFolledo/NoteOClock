@@ -55,7 +55,6 @@ struct ResizeableCard: View {
                 x: viewModel.xPositionForCardComponent(card: card) ?? .zero,
                 y: viewModel.yPositionForCardComponent(card: card) ?? .zero
             )
-            .background(.blue)
             .gesture(repositionGesture)
             .onTapGesture { toggleIsSelected() }
         }
