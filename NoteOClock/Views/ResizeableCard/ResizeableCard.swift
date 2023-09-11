@@ -11,6 +11,7 @@ struct ResizeableCard: View {
     @ObservedObject var viewModel: CardViewModel
     var isSelected: Bool
     weak var card: Card?
+    let menuButtonWidth: CGFloat = 25
 
     init(card: Card, viewModel: CardViewModel) {
         self.viewModel = viewModel
@@ -48,6 +49,8 @@ struct ResizeableCard: View {
                         }, dragEnded: {
                             viewModel.resizeEnded()
                         })
+
+                    deleteButton
                 }
             }
             .background(isSelected ? card.type.backgroundColor : .clear)
@@ -58,6 +61,26 @@ struct ResizeableCard: View {
             .gesture(repositionGesture)
             .onTapGesture { toggleIsSelected() }
         }
+    }
+
+    var deleteButton: some View {
+        VStack(alignment: .trailing) {
+            Button {
+                if let card,
+                   let index = viewModel.cards.firstIndex(of: card) {
+                    viewModel.cards.remove(at: index)
+                }
+            } label: {
+                Image(systemName: "trash.fill")
+                    .resizable()
+                    .renderingMode(.template)
+                    .foregroundColor(Color(uiColor: .systemRed))
+                    .scaledToFit()
+                    .frame(width: menuButtonWidth, height: menuButtonWidth)
+            }
+            Spacer()
+        }
+        .offset(y: -menuButtonWidth - 20)
     }
 }
 
