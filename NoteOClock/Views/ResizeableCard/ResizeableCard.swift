@@ -26,6 +26,7 @@ struct ResizeableCard: View {
                     case .text:
                         Text(card.type.title)
                             .padding(.all, 4)
+                            .foregroundColor(Color(uiColor: .label))
                     case .clock:
                         ClockView()
                     }
@@ -49,7 +50,7 @@ struct ResizeableCard: View {
                         })
                 }
             }
-            .background(isSelected ? card.type.color : .gray)
+            .background(isSelected ? card.type.color : .clear)
             .position(
                 x: viewModel.xPositionForCardComponent(card: card) ?? .zero,
                 y: viewModel.yPositionForCardComponent(card: card) ?? .zero

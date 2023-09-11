@@ -22,6 +22,7 @@ struct ClockView: View {
             Text(String(format: "%02d:%02d:%02d", currentHour, currentMinute, currentSecond))
                 .font(.system(size: 60))
         }
+        .foregroundColor(Color(uiColor: .label))
         .padding()
         .onAppear {
             // Update the time every second
