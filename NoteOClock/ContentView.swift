@@ -56,6 +56,9 @@ struct ContentView: View {
                 cardViewModel.cards.append(clockCard)
             }
         }
+        .onTapGesture {
+            cardViewModel.selectedCard = nil
+        }
     }
 }
 
