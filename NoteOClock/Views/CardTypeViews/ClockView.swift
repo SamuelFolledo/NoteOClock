@@ -23,7 +23,7 @@ struct ClockView: View {
             Text(String(format: "%02d/%02d/%04d", currentMonth, currentDay, currentYear))
                 .font(.system(size: 20))
             Text(String(format: "%02d:%02d:%02d", currentHour, currentMinute, currentSecond))
-                .font(.system(size: 60))
+                .font(.system(size: 160))
         }
         .foregroundColor(isSelected ? selectedTextColor : Color(uiColor: .label))
         .padding()
