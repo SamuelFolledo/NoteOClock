@@ -7,6 +7,11 @@
 
 import SwiftUI
 
+enum CardType {
+    case text
+    case clock
+}
+
 class Card: ObservableObject {
     @Published var type: CardType = .text
     @Published var origin: CGPoint = .zero
@@ -14,22 +19,21 @@ class Card: ObservableObject {
     @Published var id: String = ""
     @Published var isSelected: Bool
     @Published var text: String = ""
-    var deselectedBackgroundColor = Color(uiColor: .secondarySystemBackground)
 
     var backgroundColor: Color {
         switch type {
         case .clock:
-            return isSelected ? type.selectedBackgroundColor : Color(uiColor: .clear)
+            return isSelected ? .indigo : Color(uiColor: .clear)
         case .text:
-            return isSelected ? type.selectedBackgroundColor : deselectedBackgroundColor
+            return isSelected ? .teal : Color(uiColor: .secondarySystemBackground)
         }
     }
     var foregroundColor: Color {
         switch type {
         case .clock:
-            return isSelected ? type.textColor : Color(uiColor: .label)
+            return isSelected ? Color(uiColor: .systemBackground) : Color(uiColor: .label)
         case .text:
-            return isSelected ? type.textColor : Color(uiColor: .label)
+            return isSelected ? Color(uiColor: .systemBackground) : Color(uiColor: .label)
         }
     }
 
@@ -42,33 +46,9 @@ class Card: ObservableObject {
     }
 }
 
+//MARK:
 extension Card: Equatable {
     static func == (lhs: Card, rhs: Card) -> Bool {
         return lhs.id == rhs.id
-    }
-}
-
-enum CardType {
-    case text
-    case clock
-
-    ///Background color when selected
-    var selectedBackgroundColor: Color {
-        switch self {
-        case .text:
-            return .teal
-        case .clock:
-            return .indigo
-        }
-    }
-
-    ///Text color when selected
-    var textColor: Color {
-        switch self {
-        case .text:
-            return Color(uiColor: .label)
-        case .clock:
-            return Color(uiColor: .label)
-        }
     }
 }
