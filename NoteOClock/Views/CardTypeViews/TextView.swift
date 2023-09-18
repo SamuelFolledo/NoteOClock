@@ -1,5 +1,5 @@
 //
-//  EditableTextView.swift
+//  TextView.swift
 //  NoteOClock
 //
 //  Created by Samuel Folledo on 9/17/23.
@@ -7,11 +7,12 @@
 
 import SwiftUI
 
-struct EditableTextView: View {
+struct TextView: View {
     @ObservedObject var card: Card
 
     @State private var placeHolderText = "Enter text here"
     @FocusState private var isTextEditing: Bool
+    private let padding: CGFloat = 4
 
     var body: some View {
         ZStack {
@@ -19,7 +20,7 @@ struct EditableTextView: View {
             if showPlaceholderText {
                 TextEditor(text: $placeHolderText)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .padding()
+                    .padding(padding)
                     .background(Color(UIColor.clear))
                     .foregroundColor(Color(uiColor: .gray))
                     .opacity(0.8)
@@ -28,9 +29,8 @@ struct EditableTextView: View {
 
             TextEditor(text: $card.text)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .padding()
+                .padding(padding)
                 .background(Color(UIColor.clear))
-                .cornerRadius(8)
                 .autocapitalization(.sentences)
                 .autocorrectionDisabled()
                 .foregroundColor(card.foregroundColor)
@@ -46,9 +46,9 @@ struct EditableTextView: View {
     }
 }
 
-struct EditableTextView_Previews: PreviewProvider {
+struct TextView_Previews: PreviewProvider {
     static var previews: some View {
-        EditableTextView(card: fakeTextCard)
+        TextView(card: fakeTextCard)
             .preferredColorScheme(.dark)
     }
 }

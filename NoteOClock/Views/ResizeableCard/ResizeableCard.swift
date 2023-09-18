@@ -22,7 +22,7 @@ struct ResizeableCard: View {
             Group {
                 switch card.type {
                 case .text:
-                    EditableTextView(card: card)
+                    TextView(card: card)
                 case .clock:
                     ClockView(card: card)
                 }
