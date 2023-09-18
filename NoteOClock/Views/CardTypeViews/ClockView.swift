@@ -24,7 +24,7 @@ struct ClockView: View {
             Text(String(format: "%02d:%02d:%02d", currentHour, currentMinute, currentSecond))
                 .font(.system(size: 160))
         }
-        .foregroundColor(card.isSelected ? card.type.textColor : Color(uiColor: .label))
+        .foregroundColor(card.foregroundColor)
         .padding()
         .onAppear {
             // Update the time every second

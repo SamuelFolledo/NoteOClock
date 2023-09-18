@@ -48,7 +48,7 @@ struct ResizeableCard: View {
                 deleteButton
             }
         }
-        .background(card.isSelected ? card.type.backgroundColor : .clear)
+        .background(card.backgroundColor)
         .position(
             x: viewModel.xPositionForCardComponent(card: card) ?? .zero,
             y: viewModel.yPositionForCardComponent(card: card) ?? .zero

@@ -9,8 +9,8 @@ import SwiftUI
 
 let screenWidth: CGFloat = UIScreen.main.bounds.width
 let screenHeight: CGFloat = UIScreen.main.bounds.height
-let fakeTextCard = Card(type: .text, origin: .init(x: 80, y: 390), size: .init(width: 200, height: 200), id: "1")
-let fakeTextCard2 = Card(type: .text, origin: .init(x: 250, y: 350), size: .init(width: 150, height: 150), id: "2")
+let fakeTextCard = Card(type: .text, origin: .init(x: 80, y: 250), size: .init(width: 200, height: 200), id: "1")
+let fakeTextCard2 = Card(type: .text, origin: .init(x: 250, y: 300), size: .init(width: 150, height: 150), id: "2")
 let fakeClockCard = Card(type: .clock, origin: .init(x: screenWidth / 5, y: 100), size: .init(width: screenWidth / 1.5, height: 150), id: "0")
 
 struct ContentView: View {

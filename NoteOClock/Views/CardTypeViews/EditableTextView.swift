@@ -8,17 +8,38 @@
 import SwiftUI
 
 struct EditableTextView: View {
-    let placeHolderText = "Enter text here"
-    var card: Card
+    @ObservedObject var card: Card
+
+    @State private var placeHolderText = "Enter text here"
+    @FocusState private var isTextEditing: Bool
 
     var body: some View {
-        //            TextField(placeHolderText, text: $text)
-        Text(card.type.title)
-            .padding()
-        //                .background(Color(UIColor.systemBackground))
-        //                .cornerRadius(8)
-        //                .autocapitalization(.sentences)
-            .foregroundColor(card.isSelected ? card.type.textColor : Color(uiColor: .label))
+        ZStack {
+            if !isTextEditing {
+                TextEditor(text: $placeHolderText)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .padding()
+                    .background(Color(UIColor.clear))
+                    .foregroundColor(Color(uiColor: .gray))
+                    .disabled(true)
+            }
+            TextEditor(text: $card.text)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .padding()
+                .background(Color(UIColor.clear))
+                .cornerRadius(8)
+                .autocapitalization(.sentences)
+                .autocorrectionDisabled()
+                .foregroundColor(card.foregroundColor)
+                .focused($isTextEditing)
+                .onAppear {
+                    isTextEditing = card.isSelected
+                }
+                .onChange(of: card.isSelected) {
+                    isTextEditing = $0
+                }
+                .opacity(!isTextEditing ? 0 : 1)
+        }
     }
 }
 

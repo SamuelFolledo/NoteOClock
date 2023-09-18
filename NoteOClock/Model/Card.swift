@@ -13,6 +13,25 @@ class Card: ObservableObject {
     @Published var size: CGSize = .zero
     @Published var id: String = ""
     @Published var isSelected: Bool
+    @Published var text: String = ""
+    var deselectedBackgroundColor = Color(uiColor: .secondarySystemBackground)
+
+    var backgroundColor: Color {
+        switch type {
+        case .clock:
+            return isSelected ? type.selectedBackgroundColor : Color(uiColor: .clear)
+        case .text:
+            return isSelected ? type.selectedBackgroundColor : deselectedBackgroundColor
+        }
+    }
+    var foregroundColor: Color {
+        switch type {
+        case .clock:
+            return isSelected ? type.textColor : Color(uiColor: .label)
+        case .text:
+            return isSelected ? type.textColor : Color(uiColor: .label)
+        }
+    }
 
     init(type: CardType, origin: CGPoint, size: CGSize, id: String, isSelected: Bool = false) {
         self.type = type
@@ -33,17 +52,8 @@ enum CardType {
     case text
     case clock
 
-    var title: String {
-        switch self {
-        case .text:
-            return "Text\nTextTextTextTextText\nTextText"
-        case .clock:
-            return "Clock"
-        }
-    }
-
     ///Background color when selected
-    var backgroundColor: Color {
+    var selectedBackgroundColor: Color {
         switch self {
         case .text:
             return .teal
@@ -56,9 +66,9 @@ enum CardType {
     var textColor: Color {
         switch self {
         case .text:
-            return Color(uiColor: .systemBackground)
+            return Color(uiColor: .label)
         case .clock:
-            return Color(uiColor: .systemBackground)
+            return Color(uiColor: .label)
         }
     }
 }
