@@ -26,6 +26,9 @@ class CardViewModel: ObservableObject {
 
     //MARK: - Public Methods
     func createNewCard(_ card: Card) {
+        if card.isSelected {
+            deselectAllCards()
+        }
         cards.append(card)
     }
 

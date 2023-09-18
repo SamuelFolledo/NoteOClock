@@ -15,14 +15,17 @@ struct EditableTextView: View {
 
     var body: some View {
         ZStack {
-            if !isTextEditing {
+            let showPlaceholderText = !isTextEditing && card.text.isEmpty
+            if showPlaceholderText {
                 TextEditor(text: $placeHolderText)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .padding()
                     .background(Color(UIColor.clear))
                     .foregroundColor(Color(uiColor: .gray))
+                    .opacity(0.8)
                     .disabled(true)
             }
+
             TextEditor(text: $card.text)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .padding()
@@ -38,7 +41,7 @@ struct EditableTextView: View {
                 .onChange(of: card.isSelected) {
                     isTextEditing = $0
                 }
-                .opacity(!isTextEditing ? 0 : 1)
+                .opacity(showPlaceholderText ? 0 : 1)
         }
     }
 }
