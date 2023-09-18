@@ -9,6 +9,9 @@ import SwiftUI
 
 let screenWidth: CGFloat = UIScreen.main.bounds.width
 let screenHeight: CGFloat = UIScreen.main.bounds.height
+let fakeTextCard = Card(type: .text, origin: .init(x: 80, y: 390), size: .init(width: 200, height: 200), id: "1")
+let fakeTextCard2 = Card(type: .text, origin: .init(x: 250, y: 350), size: .init(width: 150, height: 150), id: "2")
+let fakeClockCard = Card(type: .clock, origin: .init(x: screenWidth / 5, y: 100), size: .init(width: screenWidth / 1.5, height: 150), id: "0")
 
 struct ContentView: View {
     @StateObject var cardViewModel = CardViewModel()
@@ -19,8 +22,8 @@ struct ContentView: View {
     var body: some View {
         GeometryReader { proxy in
             ZStack {
-                ForEach(cardViewModel.cards, id: \.id) { card in
-                    ResizeableCard(card: card,
+                ForEach(cardViewModel.cards.indices, id: \.self) { index in
+                    ResizeableCard(index: index,
                                    viewModel: cardViewModel)
                 }
 
@@ -45,16 +48,13 @@ struct ContentView: View {
             }
             .background(Color(uiColor: .systemBackground))
             .onAppear {
-                let fakeCard = Card(type: .text, origin: .init(x: 80, y: 390), size: .init(width: 200, height: 200), id: "1")
-                cardViewModel.cards.append(fakeCard)
-                let fakeCard2 = Card(type: .text, origin: .init(x: 250, y: 350), size: .init(width: 150, height: 150), id: "2")
-                cardViewModel.cards.append(fakeCard2)
-                let clockCard = Card(type: .clock, origin: .init(x: screenWidth / 5, y: 100), size: .init(width: screenWidth / 1.5, height: 150), id: "0")
-                cardViewModel.cards.append(clockCard)
+                cardViewModel.createNewCard(fakeTextCard)
+                cardViewModel.createNewCard(fakeTextCard2)
+                cardViewModel.createNewCard(fakeClockCard)
             }
         }
         .onTapGesture {
-            cardViewModel.selectedCard = nil
+            cardViewModel.deselectAllCards()
         }
     }
 

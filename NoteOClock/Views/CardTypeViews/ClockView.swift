@@ -8,8 +8,7 @@
 import SwiftUI
 
 struct ClockView: View {
-    var isSelected: Bool
-    var selectedTextColor: Color
+    var card: Card
 
     @State private var currentHour = 0
     @State private var currentMinute = 0
@@ -25,7 +24,7 @@ struct ClockView: View {
             Text(String(format: "%02d:%02d:%02d", currentHour, currentMinute, currentSecond))
                 .font(.system(size: 160))
         }
-        .foregroundColor(isSelected ? selectedTextColor : Color(uiColor: .label))
+        .foregroundColor(card.isSelected ? card.type.textColor : Color(uiColor: .label))
         .padding()
         .onAppear {
             // Update the time every second
@@ -46,7 +45,7 @@ struct ClockView: View {
 
 struct ClockView_Previews: PreviewProvider {
     static var previews: some View {
-        ClockView(isSelected: true, selectedTextColor: Color(uiColor: .systemBackground))
+        ClockView(card: fakeClockCard)
             .preferredColorScheme(.dark)
     }
 }

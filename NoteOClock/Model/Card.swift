@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-class Card {
+class Card: ObservableObject {
     @Published var type: CardType = .text
     @Published var origin: CGPoint = .zero
     @Published var size: CGSize = .zero

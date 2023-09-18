@@ -12,44 +12,41 @@ enum ResizePoint {
 }
 
 class CardViewModel: ObservableObject {
-    @Published var cards: [Card] = []
+    @Published private(set) var cards: [Card] = []
     @Published var draggedCard: Card? = nil
     @Published var dragOffset: CGSize? = nil
     @Published var resizedCard: Card? = nil
     @Published var resizeOffset: CGSize? = nil
     @Published var previousResizeOffset: CGSize? = nil
     @Published var resizePoint: ResizePoint? = nil
-    @Published var selectedCard: Card? = nil {
-        didSet {
-            let isSelected = selectedCard != nil
-            if let selectedCard {
-                for card in cards where card.id == selectedCard.id {
-                    card.isSelected = selectedCard.isSelected
-                }
-            }
-        }
-    }
 
     init(cards: [Card] = []) {
         self.cards = cards
     }
 
     //MARK: - Public Methods
-    func createNewCard(_ newCard: Card) {
-        cards.append(newCard)
-        selectedCard = newCard
+    func createNewCard(_ card: Card) {
+        cards.append(card)
     }
 
-    func updateSelectedCard(card: Card?) {
-        if selectedCard == nil {
-            selectedCard = card
-        } else {
-            if selectedCard != card {
-                selectedCard = card
+    func deleteCard(_ card: Card) {
+        if let index = cards.firstIndex(of: card) {
+            cards.remove(at: index)
+        }
+    }
+
+    func selectCard(cardId: String) {
+        for card in cards {
+            if card.id == cardId {
+                card.isSelected.toggle()
             } else {
-                selectedCard = nil
+                card.isSelected = false
             }
         }
+    }
+
+    func deselectAllCards() {
+        cards.forEach { $0.isSelected = false }
     }
 }
 
