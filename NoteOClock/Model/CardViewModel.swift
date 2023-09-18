@@ -20,8 +20,8 @@ class CardViewModel: ObservableObject {
     @Published var previousResizeOffset: CGSize? = nil
     @Published var resizePoint: ResizePoint? = nil
 
-    init(cards: [Card] = []) {
-        self.cards = cards
+    init() {
+        self.cards = UserViewModel.shared.getCards()
     }
 
     //MARK: - Public Methods
@@ -30,12 +30,14 @@ class CardViewModel: ObservableObject {
             deselectAllCards()
         }
         cards.append(card)
+        UserViewModel.shared.saveCards(cards)
     }
 
     func deleteCard(_ card: Card) {
         if let index = cards.firstIndex(of: card) {
             cards.remove(at: index)
         }
+        UserViewModel.shared.saveCards(cards)
     }
 
     func selectCard(cardId: String) {
@@ -46,10 +48,12 @@ class CardViewModel: ObservableObject {
                 card.isSelected = false
             }
         }
+        UserViewModel.shared.saveCards(cards)
     }
 
     func deselectAllCards() {
         cards.forEach { $0.isSelected = false }
+        UserViewModel.shared.saveCards(cards)
     }
 }
 
@@ -182,7 +186,7 @@ extension CardViewModel {
         self.resizeOffset = nil
         self.resizePoint = nil
         self.resizedCard = nil
-
+        UserViewModel.shared.saveCards(cards)
     }
 
     //MARK: Drag Methods
@@ -196,5 +200,6 @@ extension CardViewModel {
         draggedCard?.origin.y += dragOffset.height
         draggedCard = nil
         self.dragOffset = nil
+        UserViewModel.shared.saveCards(cards)
     }
 }

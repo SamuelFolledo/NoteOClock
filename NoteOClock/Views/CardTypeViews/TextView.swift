@@ -48,7 +48,13 @@ struct TextView: View {
 
 struct TextView_Previews: PreviewProvider {
     static var previews: some View {
+        let fakeTextCard = Card(type: .text, origin: .init(x: 80, y: 250), size: .init(width: 200, height: 200), id: "1")
+        let fakeTextCard2 = Card(type: .text, origin: .init(x: 250, y: 300), size: .init(width: 150, height: 150), id: "2")
+
         TextView(card: fakeTextCard)
+            .preferredColorScheme(.dark)
+
+        TextView(card: fakeTextCard2)
             .preferredColorScheme(.dark)
     }
 }
