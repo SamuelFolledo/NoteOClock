@@ -17,17 +17,44 @@ class CardViewModel: ObservableObject {
     @Published var dragOffset: CGSize? = nil
     @Published var resizedCard: Card? = nil
     @Published var resizeOffset: CGSize? = nil
-    @Published var resizePoint: ResizePoint? = nil
-    @Published var selectedCard: Card? = nil
-//    @Published var selectedTypeToAdd: CardType? = nil
     @Published var previousResizeOffset: CGSize? = nil
+    @Published var resizePoint: ResizePoint? = nil
+    @Published var selectedCard: Card? = nil {
+        didSet {
+            let isSelected = selectedCard != nil
+            if let selectedCard {
+                for card in cards where card.id == selectedCard.id {
+                    card.isSelected = selectedCard.isSelected
+                }
+            }
+        }
+    }
 
     init(cards: [Card] = []) {
         self.cards = cards
-
     }
 
     //MARK: - Public Methods
+    func createNewCard(_ newCard: Card) {
+        cards.append(newCard)
+        selectedCard = newCard
+    }
+
+    func updateSelectedCard(card: Card?) {
+        if selectedCard == nil {
+            selectedCard = card
+        } else {
+            if selectedCard != card {
+                selectedCard = card
+            } else {
+                selectedCard = nil
+            }
+        }
+    }
+}
+
+//MARK: - Size and Position methods
+extension CardViewModel {
     func widthForCardComponent(card: Card?) -> CGFloat? {
         if let card {
             let widthOffset = (resizedCard?.id == card.id) ? (resizeOffset?.width ?? 0.0) : 0.0

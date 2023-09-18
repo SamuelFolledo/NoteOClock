@@ -29,10 +29,7 @@ struct ContentView: View {
                     HStack {
                         Spacer()
                         Button {
-                            let newCard = Card(type: .text, origin: CGPoint(x: proxy.size.width / 2 + addCardCounter * 10, y: proxy.size.height / 2 + addCardCounter * 10), size: CGSize(width: newCardSize, height: newCardSize), id: "\(cardViewModel.cards.count)")
-                            cardViewModel.cards.append(newCard)
-                            cardViewModel.selectedCard = newCard
-                            addCardCounter += 1
+                            createNewCard(proxy)
                         } label: {
                             Image(systemName: "plus.circle")
                                 .resizable()
@@ -60,10 +57,21 @@ struct ContentView: View {
             cardViewModel.selectedCard = nil
         }
     }
+
+    func createNewCard(_ proxy: GeometryProxy) {
+        let newCard = Card(type: .text,
+                           origin: CGPoint(x: proxy.size.width / 2 + addCardCounter * 10, y: proxy.size.height / 2 + addCardCounter * 10),
+                           size: CGSize(width: newCardSize, height: newCardSize),
+                           id: "\(cardViewModel.cards.count)",
+                           isSelected: true)
+        cardViewModel.createNewCard(newCard)
+        addCardCounter += 1
+    }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
+            .preferredColorScheme(.dark)
     }
 }

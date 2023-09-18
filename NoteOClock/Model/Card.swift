@@ -12,12 +12,14 @@ class Card {
     @Published var origin: CGPoint = .zero
     @Published var size: CGSize = .zero
     @Published var id: String = ""
+    @Published var isSelected: Bool
 
-    init(type: CardType, origin: CGPoint, size: CGSize, id: String) {
+    init(type: CardType, origin: CGPoint, size: CGSize, id: String, isSelected: Bool = false) {
         self.type = type
         self.origin = origin
         self.size = size
         self.id = id
+        self.isSelected = isSelected
     }
 }
 

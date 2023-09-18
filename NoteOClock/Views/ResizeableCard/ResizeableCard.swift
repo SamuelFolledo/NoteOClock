@@ -25,9 +25,7 @@ struct ResizeableCard: View {
                 Group {
                     switch card.type {
                     case .text:
-                        Text(card.type.title)
-                            .padding(.all, 4)
-                            .foregroundColor(isSelected ? card.type.textColor : Color(uiColor: .label))
+                        EditableTextView(card: card)
                     case .clock:
                         ClockView(isSelected: isSelected, selectedTextColor: card.type.textColor)
                     }
@@ -59,7 +57,9 @@ struct ResizeableCard: View {
                 y: viewModel.yPositionForCardComponent(card: card) ?? .zero
             )
             .gesture(repositionGesture)
-            .onTapGesture { toggleIsSelected() }
+            .onTapGesture {
+                viewModel.updateSelectedCard(card: card)
+            }
         }
     }
 
@@ -99,17 +99,5 @@ private extension ResizeableCard {
                     viewModel.dragEnded()
                 }
             }
-    }
-
-    func toggleIsSelected() {
-        if viewModel.selectedCard == nil {
-            viewModel.selectedCard = card
-        } else {
-            if viewModel.selectedCard != card {
-                viewModel.selectedCard = card
-            } else {
-                viewModel.selectedCard = nil
-            }
-        }
     }
 }

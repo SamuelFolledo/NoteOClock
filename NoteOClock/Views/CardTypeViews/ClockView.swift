@@ -47,5 +47,6 @@ struct ClockView: View {
 struct ClockView_Previews: PreviewProvider {
     static var previews: some View {
         ClockView(isSelected: true, selectedTextColor: Color(uiColor: .systemBackground))
+            .preferredColorScheme(.dark)
     }
 }
