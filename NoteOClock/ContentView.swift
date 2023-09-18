@@ -7,6 +7,18 @@
 
 import SwiftUI
 
+/*
+ TODO: Must-haves
+ - Edit text without showing keyboard
+ - Handle orientation changes
+ - Resize font size to fully fill resizeable card
+
+ TODO: Nice-to-haves
+ - User font's type, weight, size, color customization
+ - Customize clock style (hasDate, hasWeather, isVertical)
+ - Customize text's style (border, solid bg)
+ */
+
 let screenWidth: CGFloat = UIScreen.main.bounds.width
 let screenHeight: CGFloat = UIScreen.main.bounds.height
 let fakeClockCard = Card(type: .clock, origin: .init(x: screenWidth / 5, y: 100), size: .init(width: screenWidth / 1.4, height: 150), id: "0")
