@@ -10,6 +10,24 @@ import SwiftUI
 enum CardType: Codable {
     case text
     case clock
+
+    var defaultSize: CGSize {
+        switch self {
+        case .text:
+            return CGSize(width: 100, height: 100)
+        case .clock:
+            return CGSize(width: 600, height: 200)
+        }
+    }
+
+    func getDefaultOrigin(cardCount: Int, _ proxy: GeometryProxy) -> CGPoint {
+        switch self {
+        case .text:
+            return CGPoint(x: Int(proxy.size.width) / 2 + cardCount * 10, y: Int(proxy.size.height) / 2 + cardCount * 10)
+        case .clock:
+            return CGPoint(x: Int(proxy.size.width) / 2 + cardCount * 10, y: Int(proxy.size.height) / 2 + cardCount * 10)
+        }
+    }
 }
 
 class Cards: Codable {

@@ -9,7 +9,7 @@ import SwiftUI
 
 /*
  TODO: Must-haves
- - Edit text without showing keyboard
+ - Edit text without showing keyboard (Done button?)
  - Handle orientation changes
  - Resize font size to fully fill resizeable card
 
@@ -25,7 +25,7 @@ let fakeClockCard = Card(type: .clock, origin: .init(x: screenWidth / 5, y: 100)
 
 struct ContentView: View {
     @StateObject var cardViewModel = CardViewModel()
-    @State var addCardCounter: CGFloat = 0
+    @State var addCardCounter: Int = 0
     let addButtonWidth: CGFloat = 35
     let newCardSize: CGFloat = 100
 
@@ -41,17 +41,35 @@ struct ContentView: View {
                     Spacer()
                     HStack {
                         Spacer()
-                        Button {
-                            createNewCard(proxy)
+                        Menu {
+                            Button {
+                                createNewCard(type: .clock, proxy)
+                            } label: {
+                                Label("Time", systemImage: "clock")
+                            }
+                            Button {
+                                createNewCard(type: .clock, proxy)
+                            } label: {
+                                Label("Weather", systemImage: "cloud.sun.rain")
+                            }
+                            Button {
+                                createNewCard(type: .text, proxy)
+                            } label: {
+                                Label("Text", systemImage: "text.bubble")
+                            }
                         } label: {
-                            Image(systemName: "plus.circle")
-                                .resizable()
-                                .renderingMode(.template)
-                                .foregroundColor(Color(uiColor: .label))
-                                .scaledToFit()
-                                .frame(width: addButtonWidth, height: addButtonWidth)
-                                .padding(.vertical)
-                                .padding(.horizontal, 20)
+                            Button {
+
+                            } label: {
+                                Image(systemName: "plus.circle")
+                                    .resizable()
+                                    .renderingMode(.template)
+                                    .foregroundColor(Color(uiColor: .label))
+                                    .scaledToFit()
+                                    .frame(width: addButtonWidth, height: addButtonWidth)
+                                    .padding(.vertical)
+                                    .padding(.horizontal, 20)
+                            }
                         }
                     }
                 }
@@ -68,10 +86,10 @@ struct ContentView: View {
         }
     }
 
-    func createNewCard(_ proxy: GeometryProxy) {
-        let newCard = Card(type: .text,
-                           origin: CGPoint(x: proxy.size.width / 2 + addCardCounter * 10, y: proxy.size.height / 2 + addCardCounter * 10),
-                           size: CGSize(width: newCardSize, height: newCardSize),
+    func createNewCard(type: CardType, _ proxy: GeometryProxy) {
+        let newCard = Card(type: type,
+                           origin: type.getDefaultOrigin(cardCount: addCardCounter, proxy),
+                           size: type.defaultSize,
                            id: "\(cardViewModel.cards.count)",
                            isSelected: true)
         cardViewModel.createNewCard(newCard)
