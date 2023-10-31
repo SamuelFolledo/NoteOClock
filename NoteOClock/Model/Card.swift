@@ -16,7 +16,7 @@ enum CardType: Codable {
         case .text:
             return CGSize(width: 100, height: 100)
         case .clock:
-            return CGSize(width: 600, height: 200)
+            return CGSize(width: 600, height: 160)
         }
     }
 
@@ -25,7 +25,7 @@ enum CardType: Codable {
         case .text:
             return CGPoint(x: Int(proxy.size.width) / 3 + cardCount * 10, y: Int(proxy.size.height) / 3 + cardCount * 10)
         case .clock:
-            return CGPoint(x: Int(proxy.size.width) / 2 * 10, y: Int(proxy.size.height) / 2)
+            return CGPoint(x: Int(proxy.size.width) / 2, y: Int(proxy.size.height) / 2)
         }
     }
 }
