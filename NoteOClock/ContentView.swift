@@ -9,6 +9,7 @@ import SwiftUI
 
 /*
  TODO: Must-haves
+ - TODO: Support weather CardType with different viewing mode
  - Add a toolbar on top of keyboard with text field and done button
  - Handle orientation changes
  - Resize font size to fully fill resizeable card
