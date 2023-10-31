@@ -21,7 +21,7 @@ import SwiftUI
 
 let screenWidth: CGFloat = UIScreen.main.bounds.width
 let screenHeight: CGFloat = UIScreen.main.bounds.height
-let fakeClockCard = Card(type: .clock, origin: .init(x: screenWidth / 5, y: 100), size: .init(width: screenWidth / 1.4, height: 150), id: "0")
+let fakeClockCard = Card(type: .clock, origin: .init(x: screenWidth / 5, y: 100), id: "0")
 
 struct ContentView: View {
     @StateObject var cardViewModel = CardViewModel()
@@ -88,8 +88,7 @@ struct ContentView: View {
 
     func createNewCard(type: CardType, _ proxy: GeometryProxy) {
         let newCard = Card(type: type,
-                           origin: type.getDefaultOrigin(cardCount: addCardCounter, proxy),
-                           size: type.defaultSize,
+                           origin: type.defaultOrigin(cardCount: addCardCounter, proxy),
                            id: "\(cardViewModel.cards.count)",
                            isSelected: true)
         cardViewModel.createNewCard(newCard)

@@ -20,12 +20,12 @@ enum CardType: Codable {
         }
     }
 
-    func getDefaultOrigin(cardCount: Int, _ proxy: GeometryProxy) -> CGPoint {
+    func defaultOrigin(cardCount: Int, _ proxy: GeometryProxy) -> CGPoint {
         switch self {
         case .text:
-            return CGPoint(x: Int(proxy.size.width) / 2 + cardCount * 10, y: Int(proxy.size.height) / 2 + cardCount * 10)
+            return CGPoint(x: Int(proxy.size.width) / 3 + cardCount * 10, y: Int(proxy.size.height) / 3 + cardCount * 10)
         case .clock:
-            return CGPoint(x: Int(proxy.size.width) / 2 + cardCount * 10, y: Int(proxy.size.height) / 2 + cardCount * 10)
+            return CGPoint(x: Int(proxy.size.width) / 2 * 10, y: Int(proxy.size.height) / 2)
         }
     }
 }
@@ -63,10 +63,10 @@ class Card: ObservableObject {
         }
     }
 
-    init(type: CardType, origin: CGPoint, size: CGSize, id: String, isSelected: Bool = false) {
+    init(type: CardType, origin: CGPoint, id: String, isSelected: Bool = false) {
         self.type = type
         self.origin = origin
-        self.size = size
+        self.size = type.defaultSize
         self.id = id
         self.isSelected = isSelected
     }
