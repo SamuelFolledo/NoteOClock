@@ -14,7 +14,7 @@ enum CardType: Codable {
     var defaultSize: CGSize {
         switch self {
         case .text:
-            return CGSize(width: 100, height: 100)
+            return CGSize(width: 150, height: 100)
         case .clock:
             return CGSize(width: 600, height: 160)
         }
@@ -23,7 +23,8 @@ enum CardType: Codable {
     func defaultOrigin(cardCount: Int, _ proxy: GeometryProxy) -> CGPoint {
         switch self {
         case .text:
-            return CGPoint(x: Int(proxy.size.width) / 3 + cardCount * 10, y: Int(proxy.size.height) / 3 + cardCount * 10)
+            let divisible: Int = 6
+            return CGPoint(x: Int(proxy.size.width) / (divisible * 2) + cardCount * 10, y: Int(proxy.size.height) / divisible + cardCount * 10)
         case .clock:
             return CGPoint(x: Int(proxy.size.width) / 2, y: Int(proxy.size.height) / 2)
         }

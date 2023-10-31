@@ -9,7 +9,7 @@ import SwiftUI
 
 /*
  TODO: Must-haves
- - Edit text without showing keyboard (Done button?)
+ - Add a toolbar on top of keyboard with text field and done button
  - Handle orientation changes
  - Resize font size to fully fill resizeable card
 
@@ -58,18 +58,14 @@ struct ContentView: View {
                                 Label("Text", systemImage: "text.bubble")
                             }
                         } label: {
-                            Button {
-
-                            } label: {
-                                Image(systemName: "plus.circle")
-                                    .resizable()
-                                    .renderingMode(.template)
-                                    .foregroundColor(Color(uiColor: .label))
-                                    .scaledToFit()
-                                    .frame(width: addButtonWidth, height: addButtonWidth)
-                                    .padding(.vertical)
-                                    .padding(.horizontal, 20)
-                            }
+                            Image(systemName: "plus.circle")
+                                .resizable()
+                                .renderingMode(.template)
+                                .foregroundColor(Color(uiColor: .label))
+                                .scaledToFit()
+                                .frame(width: addButtonWidth, height: addButtonWidth)
+                                .padding(.vertical)
+                                .padding(.horizontal, 20)
                         }
                     }
                 }
