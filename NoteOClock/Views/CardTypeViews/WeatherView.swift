@@ -6,12 +6,13 @@
 //
 
 import SwiftUI
-import WeatherKit
 
+@available(iOS 16.0, *)
 struct WeatherView: View {
     var card: Card
 
     @StateObject private var locationManager = LocationManager()
+    @ObservedObject var weatherKitManager = WeatherKitManager()
     @State private var currentHour = 0
     @State private var currentMinute = 0
     @State private var currentSecond = 0
@@ -38,6 +39,11 @@ struct WeatherView: View {
 
 struct WeatherView_Previews: PreviewProvider {
     static var previews: some View {
-        WeatherView(card: fakeWeatherCard)
+        if #available(iOS 16.0, *) {
+            WeatherView(card: fakeWeatherCard)
+        } else {
+            // TODO: Support iOS 15 and below
+            ClockView(card: fakeClockCard)
+        }
     }
 }

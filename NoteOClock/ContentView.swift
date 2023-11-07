@@ -18,6 +18,7 @@ import SwiftUI
  - User font's type, weight, size, color customization
  - Customize clock style (hasDate, hasWeather, isVertical)
  - Customize text's style (border, solid bg)
+ - Weather is forced the version to be iOS 16.0 and newer. Try to support iOS 15 and below
  */
 
 let screenWidth: CGFloat = UIScreen.main.bounds.width

@@ -26,7 +26,12 @@ struct ResizeableCard: View {
                 case .clock:
                     ClockView(card: card)
                 case .weather:
-                    WeatherView(card: card)
+                    if #available(iOS 16.0, *) {
+                        WeatherView(card: fakeWeatherCard)
+                    } else {
+                        // TODO: Support iOS 15 and below
+                        ClockView(card: fakeClockCard)
+                    }
                 }
             }
         }

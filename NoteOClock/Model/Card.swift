@@ -65,11 +65,11 @@ class Card: ObservableObject {
     var foregroundColor: Color {
         switch type {
         case .clock:
-            return Color(uiColor: .secondaryLabel)
+            return Color(uiColor: .label)
         case .text:
             return Color(uiColor: .label)
         case .weather:
-            return Color(uiColor: .secondaryLabel)
+            return Color(uiColor: .label)
         }
     }
 
