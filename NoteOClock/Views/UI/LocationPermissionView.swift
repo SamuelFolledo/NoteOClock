@@ -25,13 +25,11 @@ struct LocationPermissionView: View {
             .multilineTextAlignment(.center)
             .padding()
 
-
-            LocationButton(.shareCurrentLocation) {
+            Button("Share location") {
                 locationManager.requestLocation()
             }
-            .cornerRadius(30)
-            .symbolVariant(.fill)
-            .foregroundColor(.white)
+            .buttonStyle(PrimaryButton())
+            .frame(maxWidth: .infinity)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
