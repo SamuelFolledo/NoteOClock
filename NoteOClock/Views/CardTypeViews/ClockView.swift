@@ -22,7 +22,7 @@ struct ClockView: View {
             Text(String(format: "%02d/%02d/%04d", currentMonth, currentDay, currentYear))
                 .font(.system(size: 20, weight: .bold))
             Text(String(format: "%02d:%02d:%02d", currentHour, currentMinute, currentSecond))
-                .font(.system(size: 120, weight: .bold))
+                .font(.system(size: 140, weight: .bold))
         }
         .foregroundColor(card.foregroundColor)
         .padding()

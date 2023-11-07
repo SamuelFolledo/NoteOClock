@@ -25,6 +25,8 @@ struct ResizeableCard: View {
                     TextView(card: card)
                 case .clock:
                     ClockView(card: card)
+                case .weather:
+                    WeatherView(card: card)
                 }
             }
         }

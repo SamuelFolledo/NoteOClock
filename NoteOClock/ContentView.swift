@@ -23,6 +23,7 @@ import SwiftUI
 let screenWidth: CGFloat = UIScreen.main.bounds.width
 let screenHeight: CGFloat = UIScreen.main.bounds.height
 let fakeClockCard = Card(type: .clock, origin: .init(x: screenWidth / 5, y: 100), id: "0")
+let fakeWeatherCard = Card(type: .weather, origin: .init(x: screenWidth / 5, y: 100), id: "0")
 
 struct ContentView: View {
     @StateObject var cardViewModel = CardViewModel()
@@ -49,7 +50,7 @@ struct ContentView: View {
                                 Label("Time", systemImage: "clock")
                             }
                             Button {
-                                createNewCard(type: .clock, proxy)
+                                createNewCard(type: .weather, proxy)
                             } label: {
                                 Label("Weather", systemImage: "cloud.sun.rain")
                             }

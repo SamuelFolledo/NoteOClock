@@ -10,6 +10,7 @@ import SwiftUI
 enum CardType: Codable {
     case text
     case clock
+    case weather
 
     var defaultSize: CGSize {
         switch self {
@@ -17,6 +18,8 @@ enum CardType: Codable {
             return CGSize(width: 150, height: 100)
         case .clock:
             return CGSize(width: 600, height: 160)
+        case .weather:
+            return CGSize(width: 400, height: 120)
         }
     }
 
@@ -26,6 +29,8 @@ enum CardType: Codable {
             let divisible: Int = 6
             return CGPoint(x: Int(proxy.size.width) / (divisible * 2) + cardCount * 10, y: Int(proxy.size.height) / divisible + cardCount * 10)
         case .clock:
+            return CGPoint(x: Int(proxy.size.width) / 2, y: Int(proxy.size.height) / 2)
+        case .weather:
             return CGPoint(x: Int(proxy.size.width) / 2, y: Int(proxy.size.height) / 2)
         }
     }
@@ -53,14 +58,18 @@ class Card: ObservableObject {
             return isSelected ? .indigo : Color(uiColor: .clear)
         case .text:
             return isSelected ? .teal : Color(uiColor: .secondarySystemBackground)
+        case .weather:
+            return isSelected ? .purple : Color(uiColor: .clear)
         }
     }
     var foregroundColor: Color {
         switch type {
         case .clock:
-            return Color(uiColor: .label)
+            return Color(uiColor: .secondaryLabel)
         case .text:
             return Color(uiColor: .label)
+        case .weather:
+            return Color(uiColor: .secondaryLabel)
         }
     }
 
