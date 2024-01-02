@@ -26,7 +26,7 @@ struct LocationPermissionView: View {
             .padding()
 
             Button("Share location") {
-                locationManager.requestLocation()
+                locationManager.requestAuthorisation()
             }
             .buttonStyle(PrimaryButton())
             .frame(maxWidth: .infinity)

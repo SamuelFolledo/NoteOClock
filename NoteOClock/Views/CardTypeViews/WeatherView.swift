@@ -19,8 +19,31 @@ struct WeatherView: View {
     @State private var currentDay = 1
     @State private var currentMonth = 1
     @State private var currentYear = 2023
+    @State private var text: String = ""
 
     var body: some View {
+        VStack {
+            weatherView
+
+            userLocationView
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+
+    var weatherView: some View {
+        VStack {
+            TextField(text: $text, prompt: Text("Enter zip code")) {
+                Text("Zip code")
+            }
+
+            Label(weatherKitManager.temp, systemImage: weatherKitManager.symbol)
+                .task {
+                    await weatherKitManager.getWeather()
+                }
+        }
+    }
+
+    var userLocationView: some View {
         VStack {
             if let location = locationManager.location {
                 Text("Your coordinate are:\(location.longitude), \(location.latitude)")
@@ -33,7 +56,6 @@ struct WeatherView: View {
                 }
             }
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
 

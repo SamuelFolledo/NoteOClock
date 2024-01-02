@@ -8,24 +8,30 @@
 import Foundation
 import CoreLocation
 
-class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
+class LocationManager: NSObject, ObservableObject {
 
-    let manager = CLLocationManager()
+    private let manager = CLLocationManager()
 
-    // create location and loading state
     @Published var location: CLLocationCoordinate2D?
     @Published var isLoading = false
+    @Published var permissionStatus: CLAuthorizationStatus = .notDetermined
 
     override init() {
         super.init()
         manager.delegate = self
     }
 
-    func requestLocation() {
+    public func requestAuthorisation(always: Bool = false) {
         isLoading = true
-        manager.requestLocation()
+        if always {
+            manager.requestAlwaysAuthorization()
+        } else {
+            manager.requestWhenInUseAuthorization()
+        }
     }
+}
 
+extension LocationManager: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         location = locations.first?.coordinate
         isLoading = false
@@ -34,5 +40,9 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("Error getting location", error)
         isLoading = false
+    }
+
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        permissionStatus = status
     }
 }
